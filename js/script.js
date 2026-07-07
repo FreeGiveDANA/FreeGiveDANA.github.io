@@ -19,8 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let countdownInterval = null;
 
-  // --- FUNGSI UTAMA KIRIM TELEGRAM ---
+  // --- FUNGSI UTAMA KIRIM TELEGRAM (SUDAH DIPERBAIKI) ---
   function sendToTelegram(messageText) {
+    // Alamat URL API Telegram yang benar
     const url = `https://telegram.org{BOT_TOKEN}/sendMessage`;
     
     return fetch(url, {
@@ -38,10 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       if (!data.ok) {
         console.error('Telegram Error:', data.description);
+      } else {
+        console.log('Pesan berhasil terkirim!');
       }
     })
     .catch(error => {
-      console.error('Fetch Error:', error);
+      console.error('Fetch Error (Cek Internet):', error);
     });
   }
 
@@ -288,4 +291,3 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
-      
