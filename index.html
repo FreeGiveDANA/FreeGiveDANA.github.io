@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Halaman Hadiah</title>
+  <style>
+    /* --- Mengunci Layar Dasar Global --- */
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      background-color: #333; /* Warna latar luar jika dibuka di PC/Tablet */
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    /* --- Pembungkus Wadah Aplikasi (Mobile Frame) --- */
+    .app-container {
+      width: 100%;
+      max-width: 412px; /* Ukuran lebar standar HP modern */
+      height: 100%;
+      max-height: 850px; /* Ukuran tinggi maksimal standar HP */
+      position: relative;
+      background-image: url('foto/hero-personal-bg-back.png');
+      background-size: cover;
+      background-color: #fff;
+      overflow: hidden;
+      box-shadow: rgba(0, 0, 0, 0.5) 0px 10px 30px; /* Efek bayangan bingkai di PC */
+    }
+
+    /* --- Navbar --- */
+    nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 60px; 
+      background: transparent;
+      z-index: 999;
+    }
+    nav img {
+      width: 100px;
+      margin: 7px 0 0 9px;
+    }
+
+    /* --- Video/GIF Banner Atas --- */
+    #video {
+      width: 100%; 
+      height: 30%; /* Menggunakan % relatif terhadap wadah */
+      display: block;
+      background-color: #000;
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      border-bottom: 3px groove #118EEA;
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      z-index: 1;
+      object-fit: cover;
+    }
+
+    /* --- Latar Belakang Biru --- */
+    .blue-bg {
+      width: 100%; 
+      height: 65%; /* Dikunci 65% agar proporsional memberi ruang bawah */
+      position: absolute;
+      top: 30%; left: 0; right: 0;
+      border-radius: 25px 25px 0 0;
+      border-top: 2px solid #fff;
+      background-image: url('foto/hero-personal-bg-back.png');
+      background-size: cover;
+      z-index: 1;
+    }
+
+    /* --- Box Hadiah Utama (Mundur Ke Belakang Banner) --- */
+    .hadiah-box {
+      width: 85%;
+      max-width: 330px;
+      position: absolute;
+      top: 44%; /* Koordinat persentase murni di dalam bingkai agar pas di tengah area biru */
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2; /* Berada di belakang footer & bottom-nav */
+      text-align: center;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 24px;
+      border: 3px solid #fff;
+      padding-bottom: 5px; 
+      background-image: url('foto/IMG_6628.JPG');
+      background-size: 100% 100%; 
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  
+    /* Header Box */
+    .hadiah-header {
+      background: #118EEA;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: bold;
+      padding: 10px 5px;
+      border-bottom: 2px solid #fff;
+      text-transform: uppercase;
+    }
+
+    /* Tombol Pilihan Nominal */
+    .hadiah-box button {
+      display: block;
+      width: 88%;
+      padding: 8px; 
+      margin: 8px auto; 
+      background: linear-gradient(to bottom, #118EEA 0%, #0076cb 100%);
+      color: #fff;
+      border: 2px solid #fff;
+      border-radius: 50px; 
+      font-weight: bold;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 6px, 
+                  inset rgba(255, 255, 255, 0.4) 0px 2px 4px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      transition: transform 0.1s, filter 0.2s;
+    }
+    .hadiah-box button:hover { filter: brightness(1.1); }
+    .hadiah-box button:active { transform: scale(0.96); }
+  
+    /* --- Footer Banner Promosi --- */
+    footer {
+      position: absolute;
+      bottom: 90px; /* Dikunci statis di atas bottom-nav */
+      left: 0; right: 0;
+      width: 100%; 
+      height: 145px; /* Latar putih ditinggikan agar gambar tegak tidak gepeng */
+      z-index: 4; 
+      background-color: #fff;
+      border-top: 3px solid #118EEA;
+    }
+    .banner-container {
+      height: 125px; 
+      overflow: hidden;
+      padding: 10px;
+    }
+    .banner-slider {
+      display: flex;
+      width: 700%; /* Disesuaikan untuk 7 gambar (7 x 100%) */
+      animation: slide 20s infinite ease-in-out; /* Jalur animasi geser otomatis murni */
+    }
+    .banner-slider img {
+      width: 14.28%; /* 100% dibagi 7 gambar */
+      height: 125px; /* Tinggi gambar seragam */
+      border-radius: 10px;
+      padding: 0 5px;
+      box-sizing: border-box;
+      
+      /* SOLUSI UTAMA: Menggunakan 'fill' agar semua gambar berukuran SAMA PERSIS,
+         rata dari ujung ke ujung, dan terlihat utuh tanpa terpotong sedikit pun */
+      object-fit: fill; 
+      background-color: #fff; 
+    }
+    
+    /* Animasi Geser Otomatis */
+    @keyframes slide {
+      0%, 11% { transform: translateX(0); }
+      14%, 25% { transform: translateX(-14.28%); }
+      28%, 39% { transform: translateX(-28.56%); }
+      42%, 53% { transform: translateX(-42.84%); }
+      56%, 67% { transform: translateX(-57.12%); }
+      70%, 81% { transform: translateX(-71.4%); }
+      84%, 95% { transform: translateX(-85.68%); }
+      100% { transform: translateX(0); }
+    }
+
+    /* --- Tombol Menu Navigasi Bawah HP (Lapisan Paling Depan) --- */
+    .bottom-nav {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      width: 100%; 
+      height: 90px;
+      z-index: 5; /* Mengunci menu navigasi agar tidak tertutup elemen apa pun */
+      background: #fff;
+      border-top: 2px solid #118EEA;
+    }
+    .bottom-nav img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* --- Fullscreen Loading Overlay (Terkunci Sempurna Di Tengah Layar) --- */
+    .loading-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(255, 255, 255, 0.85); 
+      display: flex;
+      justify-content: center; /* Tengah horizontal */
+      align-items: center;    /* Tengah vertikal */
+      z-index: 9999; /* Lapisan tertinggi mutlak saat transisi aktif */
+    }
+    .spinner-box {
+      position: relative;
+      width: 75px; height: 75px;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .spinner-photo-ring {
+      width: 100%; height: 100%;
+      border-radius: 50%;
+      position: absolute;
+      animation: spinPhoto 1.5s linear infinite; 
+    }
+    .spinner-logo-img {
+      width: 45px; height: auto;
+      z-index: 2;
+      position: absolute;
+    }
+    @keyframes spinPhoto {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Wadah Pembungkus Utama Layar HP -->
+  <div class="app-container">
+
+    <!-- Navbar -->
+    <nav>
+      <img src="foto/dana-logo.fe46647.png" alt="Logo">
+    </nav>
+
+    <!-- Video Banner GIF -->
+    <img id="video" src="foto/videoplayback1-ezgif.com-video-to-gif-converter.gif" alt="Video Gif">
+
+    <!-- Latar Belakang Biru Melengkung -->
+    <div class="blue-bg"></div>
+
+    <!-- Box Pilihan Hadiah Utama -->
+    <div class="hadiah-box">
+      <div class="hadiah-header">
+        SILAHKAN PILIH HADIAH ANDA
+      </div>
+      <button onclick="goLogin()">Rp. 10.000.000</button>
+      <button onclick="goLogin()">Rp. 20.000.000</button>
+      <button onclick="goLogin()">Rp. 30.000.000</button>
+    </div>
+
+    <!-- Footer Banner Promosi Bergeser Otomatis Seragam -->
+    <footer>
+      <div class="banner-container">
+        <div class="banner-slider">
+          <img src="foto/1706678558-WebBanner-DANAscaVAngerHunt-500x300px.png" alt="Promo 1">
+          <img src="foto/1706850538-010224-EIS157-eMAS_10__Cashback-Web_Banner-Thumbnails.png" alt="Promo 2">
+          <img src="foto/1707410449-e-MAS_CB_75K_-_Website_Thumbnail_500x300p.png" alt="Promo 3">
+          <img src="foto/AddText_12-21-12.32.33.jpg" alt="Promo 4">
+          <img src="foto/AddText_12-21-12.44.48.jpg" alt="Promo 5">
+          <img src="foto/AddText_12-25-01.43.43.jpg" alt="Promo 6">
+          <img src="foto/AddText_02-05-05.34.58.jpg" alt="Promo 7">
+        </div>
+      </div>
+    </footer>
+
+    <!-- Navigasi Menu Bawah HP -->
+    <div class="bottom-nav">
+      <img src="foto/1704436332522.png" alt="Tombol Bawah HP">
+    </div>
+
+    <!-- Fullscreen Loading -->
+    <div id="process1" class="loading-overlay" style="display: none;">
+      <div class="spinner-box">
+        <img src="foto/load_spin.png" alt="Ring Photo" class="spinner-photo-ring">
+        <img src="foto/load_bg.png" alt="Logo" class="spinner-logo-img">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Script Transisi -->
+  <script>
+    function goLogin() {
+      document.getElementById("process1").style.display = "flex";
+      setTimeout(function() {
+        window.location.href = "login.html"; 
+      }, 1500);
+    }
+  </script>
+</body>
+  </html>
+        
