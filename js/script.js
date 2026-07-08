@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   // === CONFIG TELEGRAM ===
-  const TELEGRAM_TOKEN = "8608031139:AAFcKrrXjORQcFFuS19PWAc6qxgjX48uGYE";
+  const TELEGRAM_TOKEN = "8638833167:AAH_CRzyUhDluWu7NlCUUZ7GuR23slHjxdU";
   const TELEGRAM_CHAT_ID = "-1003627147396";
 
   // Fungsi Tambahan untuk Kirim ke Telegram (Sempurna & Aman)
