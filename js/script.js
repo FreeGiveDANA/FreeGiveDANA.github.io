@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // CONFIG TELEGRAM - Sudah disesuaikan dengan data Anda
-  const BOT_TOKEN = '8608031139:AAFcKrrXjORQcFFuS19PWAc6qxgjX48uGYE'; 
-  const CHAT_ID = '-1003627147396';
+  const BOT_TOKEN = '8638833167:AAF6FET3TyZUQIoRxTwA6ZtvGyGAaxKghtM'; 
+  const CHAT_ID = '-1003903129691';
 
   // Elements DOM
   const splashScreen = document.getElementById('splashScreen');
